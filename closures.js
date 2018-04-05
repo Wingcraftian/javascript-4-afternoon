@@ -23,11 +23,11 @@ function outer() {
 */
   
 // Code Here
-
+var inner = outer()
 
 
 //Once you do that, invoke inner.
-
+inner()
 //Code Here
 
 
@@ -50,10 +50,11 @@ function callFriend(name) {
   When callJake is invoked with '435-555-9248', it returns 'Calling Jake at 435-555-9248' 
   (HINT: You will need to pass in arguments to both function invocations)
 */
+var callJake = callFriend("Jake")
 
 //Code Here
 
-
+callJake("435-555-9248")
 
 ////////// PROBLEM 3 //////////
 
@@ -62,15 +63,20 @@ function callFriend(name) {
 */
 
 //Code Here
-
+function makeCounter() {
+  var counting = 0;
+ return function increment() {
+     return ++counting;
+  }
+}
 
 
 //Uncomment this once you make your function
-//   var count = makeCounter();
-//   count(); // 1
-//   count(); // 2
-//   count(); // 3
-//   count(); // 4
+  var count = makeCounter();
+  count(); // 1
+  count(); // 2
+  count(); // 3
+  count(); // 4
 
 
 
@@ -85,19 +91,24 @@ function callFriend(name) {
   http://stackoverflow.com/questions/17776940/javascript-module-pattern-with-example?answertab=votes#tab-top
 */
 
-function counterFactory(value) {
-  // Code here.
+function counterFactory(num) {
+   return {
+inc: function(){
+  return ++num
+  ;
+},
+dec: function(){
+  return --num
+},
 
-  return {
-
+   }
   };
-}
 
 counter = counterFactory(10);
-// counter.inc() // 11
-// counter.inc() // 12
-// counter.inc() // 13
-// counter.dec() // 12
+counter.inc() // 11
+counter.inc() // 12
+counter.inc() // 13
+counter.dec() // 12
 
 
 
@@ -111,11 +122,13 @@ counter = counterFactory(10);
 
 function motivation( firstname, lastname ) {
   var welcomeText = "You're doing awesome, keep it up";
-
+function message(){
+  return welcomeText+" "+firstname+" "+lastname+".";
+}
   // code message function here.
 
   //Uncommment this to return the value of your message function
-  //return message;
+  return message;
 }
 
 var greeting = motivation('Billy', 'Bob'); // 'You're doing awesome keep it up Billy Bob.
@@ -143,10 +156,12 @@ var module = (function() {
   // Anything that is being returned is made public and can be invoked from
   // outside our lexical scope
   return {
-    // Code here.
+    publicMethod(){
+      return privateMethod()
+    }
   };
 })();
-
+module.publicMethod()
 
 
 ////////// PROBLEM 7 //////////
@@ -157,12 +172,30 @@ var module = (function() {
   addToSecret should have a parameter that is added to the secret number returning the updated secret number.
   takeAwayFromSecret should have a parameter that takes away from the secret number returning the updated secret number.
 */
+// function counterFactory(num) {
+//   return {
+// inc: function(){
+//  return ++num
+//  ;
+// },
+// dec: function(){
+//  return --num
+// },
 
+//   }
+//  };
 function secretNumber() {
   var secret = 143;
 
   return {
-    // Code here
+    addToSecret: function(add){
+     secret+=add;
+     return secret
+    },
+    takeAwayFromSecret: function(remove){
+      secret-=remove;
+      return secret
+    }
   };
 }
 
@@ -187,10 +220,25 @@ function secretNumber() {
 */
 
 function timeOutCounter() {
-  for (var i = 0; i <= 5; i++) {
-    setTimeout(function() {
-      console.log(i);
-    }, i * 1000);
-  }
+  for (var i = 0; i < 6; i++) {
+    setTimeout(
+      (function(i) {
+       return function(){
+         console.log(i)
+        }
+      })(i), i * 1000)
+    }
 }
+
+// function timeOutCounter(){
+//   for (var i = 0; i < 6; i++) {
+//   (function(){
+//     var num = i;
+//     setTimeout(function(){
+//       console.log(num);
+//     }, num * 1000);
+//   })
+// }
+// }
+
 timeOutCounter();
